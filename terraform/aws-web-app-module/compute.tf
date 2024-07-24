@@ -1,3 +1,5 @@
+// Make use of 'depends_on' for future security group configuration
+
 resource "aws_instance" "ec2_server" {
   ami           = var.ec2_ami //Ubuntu AMI
   instance_type = var.ec2_instance_type

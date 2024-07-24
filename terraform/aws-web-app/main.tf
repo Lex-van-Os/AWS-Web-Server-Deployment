@@ -2,6 +2,14 @@
 // TODO: Implement remote back-end (Terraform Cloud / AWS S3 with DynamoDB)
 
 terraform {
+  backend "s3" {
+    bucket = "terraform-state-bucket"
+    key    = "aws-web-app/terraform.tfstate"
+    region = "eu-west-2"
+    dynamodb_table = "web-app-state-table"
+    encrypt = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
