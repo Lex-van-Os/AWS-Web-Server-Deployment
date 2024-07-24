@@ -14,8 +14,10 @@ The motivation for this project is to get familiar with the DevOps subjects of p
 
 - EC2
 - S3
+- DynamoDB
 - Security Group(s)
 - IAM(?)
+- ELB(?)
 
 ---
 
@@ -28,9 +30,11 @@ The motivation for this project is to get familiar with the DevOps subjects of p
 ### Terraform
 
 - EC2 provisioning
-- S3 provisioning for configuration files and logs
+- S3 provisioning for configuration files, logs and Terraform state
+- DynamoDB provisioning
 - Security group configuration
 - IAM policies / roles
+- ELB (In case of multiple EC2 scenario)
 
 ---
 
