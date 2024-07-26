@@ -37,7 +37,7 @@ variable "ec2_name_tag" {
 variable "s3_bucket_name" {
   type        = string
   description = "Name of the S3 bucket"
-  default     = "web-app-state-bucket"
+  default     = "web-app-bucket-43219"
 }
 
 variable "s3_bucket_tags" {
@@ -60,12 +60,12 @@ variable "s3_force_destroy" {
 variable "s3_state_bucket_name" {
   type        = string
   description = "S3 state bucket name"
-  default     = "terraform-state-bucket"
+  default     = "terraform-state-bucket-94320"
 }
 
 variable "s3_state_bucket_tags" {
   type        = map(string)
-  description = "Tags for the S3 bucket"
+  description = "Tags for the S3 state bucket"
   default = {
     Name        = "S3 bucket for Terraform state"
     Environment = "Development"
@@ -98,23 +98,6 @@ variable "dynamodb_hash_key" {
   default     = "LockID"
 }
 
-variable "dynamodb_range_key" {
-  type        = string
-  description = "DynamoDB range key"
-  default     = "timestamp"
-}
-
-variable "dynamodb_read_capacity" {
-  type        = number
-  description = "DynamoDB read capacity"
-  default     = 5
-}
-
-variable "dynamodb_write_capacity" {
-  type        = number
-  description = "DynamoDB write capacity"
-  default     = 5
-}
 
 variable "dynamodb_table_tags" {
   type        = map(string)
