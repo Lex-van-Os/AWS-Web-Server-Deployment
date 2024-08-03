@@ -12,6 +12,9 @@ To make it possible to provision multiple variations of the same infrastructure,
 
 To provision and make use of the Terraform state files in a best practice fashion, this project includes functionality for a remote back-end by making use of an AWS S3 bucket and DynamoDB table. This set-up will simulate a scenario in which multiple people can safely work in the same Terraform environment and share the state files.
 
+### Automated SSH configuration
+By making use of the Terraform tls provider, the process of generating necessary AWS SSH files is simplified. With the use of this provider, the user can easily connect to the EC2 instance(s) through their local PC, or AWS Instance Connect.
+
 ### Terraform Provisioners (Ansible)
 
 WIP: To integrate configuration management with Ansible.
@@ -38,9 +41,21 @@ To make use of Terraform according to best practice, by creating the posibility 
 
 To ensure that the provisioned instances are well secured and least privilege is ensured, a security group is configured.
 
+### VPC, Subnets, Route Table, etc.
+To make it possible to connect to the EC2 instance(s) by making use of SSH access, the VPC, subnets, and other related networking modules, have been configured to allow access over the internet and over SSH.
+
 ### IAM
 
 To further ensure least privilege and to provide best practices for authentication and access to the infrastructure, IAM is also configured through Terraform configuration.
+
+## Configuring the project
+
+To make full use of the project functionality, a few configurations have to be made.
+
+### terraform.tfvars configuration
+
+**my_ssh_ip**: Used for configuring security group rules, to allow SSH access from the local PC
+* my_ssh_ip = "your_ip_address"
 
 ## Running the Terraform configuration
 
@@ -58,3 +73,11 @@ To run the Terraform configuration, one must take several steps, seeing how cert
 1. Uncomment the back-end block in the aws-web-app/main.tf file
 2. Run the 'terraform init -backend-config=backend.hcl' command
 3. Apply the state changes with the 'terraform apply' command
+
+## Connecting to the web server
+
+1. Run the Terraform configuration.
+2. The web server key will be stored in the aws-web-app/keys folder.
+3. Run the following command:
+   ```bash
+   ssh -i keys/web_server_key.pem ubuntu@<your_server_ip>
