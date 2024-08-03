@@ -15,6 +15,10 @@ The motivation for this project is to get familiar with the DevOps subjects of p
 - EC2
 - S3
 - DynamoDB
+- VPC
+- Subnet
+- Route Table
+- Internet Gateway
 - Security Group(s)
 - IAM(?)
 - ELB(?)
@@ -34,6 +38,7 @@ The motivation for this project is to get familiar with the DevOps subjects of p
 - DynamoDB provisioning
 - Security group configuration
 - IAM policies / roles
+- SSH automation
 - ELB (In case of multiple EC2 scenario)
 
 ---

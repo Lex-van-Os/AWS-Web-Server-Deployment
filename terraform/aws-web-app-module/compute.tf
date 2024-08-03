@@ -8,5 +8,9 @@ resource "aws_instance" "ec2_server" {
     Name        = var.ec2_name_tag,
     Environment = var.shared_environment_tag
   }
+
+  key_name               = aws_key_pair.web_server_deployer.key_name
+  subnet_id              = aws_subnet.web_server_subnet.id
+  vpc_security_group_ids = [aws_security_group.allow_tls.id]
 }
 

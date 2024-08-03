@@ -202,3 +202,8 @@ terraform.rc
 
 # Ignore hcl file
 .terraform.lock.hcl
+
+# Terraform provisioned infrastructure related credentials and keys
+
+terraform/aws-web-app/keys/*
+!terraform/aws-web-app/keys/.gitkeep
