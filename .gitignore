@@ -209,5 +209,4 @@ terraform/aws-web-app/keys/*
 !terraform/aws-web-app/keys/.gitkeep
 
 # .vscode folder settings
-.vscode/settings.json
 .vscode
