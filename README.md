@@ -45,15 +45,18 @@ The motivation for this project is to get familiar with the DevOps subjects of p
 
 ### Ansible
 
-- Installing of web server on EC2
-- Deploying of Flask app on EC2
-- Running of web server on EC2
+- Installing of web server on EC2 (NGINX)
+- Deploying of Flask app on EC2, making use of NGINX, Gunicorn, and Supervisor
+- Running of Flask application on EC2
 
 ---
 
-### Python
+### Python web application
 
 - Simple web application through Flask
+- Hosting of web app through NGINX
+- Server communication through WSGI
+- Monitoring and control with Supervisor
 
 ---
 

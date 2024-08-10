@@ -20,9 +20,11 @@ To run this project locally, a few installations are required to have been done:
    pip --version
    ```
 
-   If pip is not installed, you can install it by following the instructions on the official pip website.
+### Installation
 
-3. Create a virtual environment (optional): It is recommended to create a virtual environment to isolate the project dependencies. You can create a virtual environment by running the following command in your terminal or command prompt:
+If pip is not installed, you can install it by following the instructions on the official pip website.
+
+1. Create a virtual environment (optional): It is recommended to create a virtual environment to isolate the project dependencies. You can create a virtual environment by running the following command in your terminal or command prompt:
 
    ```
    python -m venv venv
@@ -30,7 +32,7 @@ To run this project locally, a few installations are required to have been done:
 
    This will create a new directory named "venv" which will contain the virtual environment.
 
-4. Activate the virtual environment (optional): If you have created a virtual environment, you need to activate it before installing the project dependencies. You can activate the virtual environment by running the following command in your terminal or command prompt:
+2. Activate the virtual environment (optional): If you have created a virtual environment, you need to activate it before installing the project dependencies. You can activate the virtual environment by running the following command in your terminal or command prompt:
 
    - For Windows:
 
@@ -44,7 +46,7 @@ To run this project locally, a few installations are required to have been done:
      source venv/bin/activate
      ```
 
-5. Install project dependencies: The project dependencies are listed in the "requirements.txt" file. You can install them by running the following command in your terminal or command prompt:
+3. Install project dependencies: The project dependencies are listed in the "requirements.txt" file. You can install them by running the following command in your terminal or command prompt:
 
    ```
    pip install -r requirements.txt
@@ -52,7 +54,7 @@ To run this project locally, a few installations are required to have been done:
 
    This will install all the necessary packages required to run the Flask application.
 
-6. Run the Flask app locally: Once the dependencies are installed, you can run the Flask application locally by executing the following command in your terminal or command prompt:
+4. Run the Flask app locally: Once the dependencies are installed, you can run the Flask application locally by executing the following command in your terminal or command prompt:
 
    ```
    python app.py
@@ -61,3 +63,23 @@ To run this project locally, a few installations are required to have been done:
    This will start the Flask development server, and you can access the application by navigating to http://localhost:5000 in your web browser.
 
 Remember to stop the Flask app by pressing `Ctrl+C` in your terminal or command prompt when you're done.
+
+## Used technologies
+
+Besides the Python logic for the Flask application, this part of the project also contains different definitions and technologies for the deployment of the Flask application on an EC2 instance.
+
+### Flask
+
+Flask is a popular Python web framework used for building web applications. It provides a simple and flexible way to create web services and APIs.
+
+### WSGI
+
+WSGI stands for Web Server Gateway Interface. It is a specification that defines how web servers communicate with web applications written in Python. Flask uses WSGI to interact with web servers and handle HTTP requests and responses.
+
+### NGINX
+
+NGINX is a high-performance web server and reverse proxy server. It is commonly used to serve static files, handle load balancing, and act as a reverse proxy for Flask applications. NGINX can improve the performance and scalability of your Flask application.
+
+### Supervisor
+
+Supervisor is a process control system for Unix-like operating systems. It is used to manage and monitor processes, including Flask applications. Supervisor ensures that your Flask application is always running and can automatically restart it if it crashes or stops for any reason.
