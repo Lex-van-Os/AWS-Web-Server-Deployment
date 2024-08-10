@@ -74,6 +74,17 @@ To run the Terraform configuration, one must take several steps, seeing how cert
 2. Run the 'terraform init -backend-config=backend.hcl' command
 3. Apply the state changes with the 'terraform apply' command
 
+## Server configuration with Ansible
+
+1. Define the EC2 server IP in the web_server_inventory.ini file, under the defined host
+2. Test proper configuration application, by making use of the --check flag:
+   ```bash
+   ansible-playbook -i web_server_inventory.ini --check playbook.yml
+3. Run the Ansible configuration using:
+   ```bash
+   ansible-playbook -i web_server_inventory.ini playbook.yml
+4. 
+
 ## Connecting to the web server
 
 1. Run the Terraform configuration as mentioned above.

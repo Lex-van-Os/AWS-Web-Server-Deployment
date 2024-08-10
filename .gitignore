@@ -210,3 +210,4 @@ terraform/aws-web-app/keys/*
 
 # .vscode folder settings
 .vscode/settings.json
+.vscode

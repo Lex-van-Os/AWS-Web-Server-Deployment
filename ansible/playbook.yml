@@ -3,3 +3,4 @@
   tasks:
     - name: Ping Server
       ansible.builtin.ping:
+      check_mode: false
