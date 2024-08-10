@@ -76,8 +76,15 @@ To run the Terraform configuration, one must take several steps, seeing how cert
 
 ## Connecting to the web server
 
-1. Run the Terraform configuration.
-2. The web server key will be stored in the aws-web-app/keys folder.
-3. Run the following command:
+1. Run the Terraform configuration as mentioned above.
+2. (Optional): Firstly ensure that there is no web_server_key.pem file stored in the keys folder
+3. Export the web server key as an output variable:
+   ```bash
+   terraform output -raw private_key_pem > keys/web_server_key.pem
+4. The web server key will be stored in the aws-web-app/keys folder.
+5. Set the correct permissions for your key:
+   ```bash
+   chmod 400 keys/web_server_key.pem
+6. Run the following command:
    ```bash
    ssh -i keys/web_server_key.pem ubuntu@<your_server_ip>
