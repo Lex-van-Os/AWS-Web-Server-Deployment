@@ -1,0 +1,5 @@
+- name: EC2 Web Server configuration
+  hosts: ec2_web_server
+  tasks:
+    - name: Ping Server
+      ansible.builtin.ping:
