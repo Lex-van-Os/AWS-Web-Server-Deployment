@@ -43,7 +43,8 @@ fi
 
 echo "Creating Ansible inventory file..."
 
-cd ansible
+pwd
+cd ../../ansible
 
 echo "[ec2_web_server]" > web_server_inventory.ini
 echo "$EC2_PUBLIC_IP" >> web_server_inventory.ini
