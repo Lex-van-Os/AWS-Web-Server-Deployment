@@ -36,9 +36,9 @@ echo "Private key exported."
 echo "Exporting the public IP address of the web server..."
 export TF_VAR_web_server_ip=$(terraform output -raw web_server_public_ip)
 
-if [ -z "$EC2_PUBLIC_IP" ]; then
+if [ -z "$TF_VAR_web_server_ip" ]; then
   echo "Failed to retrieve EC2 instance public IP. Exiting."
-  return false
+  return 1
 fi
 
 echo "Creating Ansible inventory file..."
