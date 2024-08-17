@@ -1,32 +1,32 @@
 - name: EC2 Web Server configuration
   hosts: ec2_web_server
-
-  vars:
-    flask_app_port: 80
-    flask_app_domain_name: ec2-web-app.example.com
+  vars_files:
+    - vars.yml
 
   tasks:
     - name: Ping Server
       ansible.builtin.ping:
       check_mode: false
 
-    - name: Ensure 'flaskapp' group exists
+    - name: Ensure "{{ app_group }}" group exists
       ansible.builtin.group:
-        name: flaskapp
+        name: "{{ app_group }}"
         state: present
+        check_mode: true
 
-    - name: Ensure 'flaskapp' user exists
+    - name: Ensure "{{ app_user }}" user exists
       ansible.builtin.user:
-        name: flaskapp
-        group: flaskapp
+        name: "{{ app_user }}"
+        group: "{{ app_group }}"
         createhome: yes
         shell: /bin/bash
         state: present
+        check_mode: true
 
-    - name: Set up sudoers for flaskapp user (if needed)
+    - name: Set up sudoers for "{{ app_user }}" user (if needed)
       ansible.builtin.copy:
-        dest: /etc/sudoers.d/flaskapp
-        content: "flaskapp ALL=(ALL) NOPASSWD:ALL"
+        dest: /etc/sudoers.d/{{ app_user }}
+        content: "{{ app_user }} ALL=(ALL) NOPASSWD:ALL"
         mode: "0440"
       when: need_sudo_access
 
@@ -40,85 +40,96 @@
         state: present
         # when: python_version.rc != 0
         update_cache: yes # Same as running apt-get update
-        check_mode: true
 
     - name: Install Nginx
       ansible.builtin.apt:
-        name: Nginx
+        name: nginx
         state: present
         update_cache: yes
-        check_mode: true
 
     - name: Install Git
       ansible.builtin.apt:
         name: git
         state: present
         update_cache: yes
+
+    - name: Create project repository to clone to
+      ansible.builtin.file:
+        path: /var/www/AWS-Web-Server-Deployment
+        state: directory
+        mode: "0755"
         check_mode: true
 
     - name: Clone Flask application repository
       ansible.builtin.git:
         repo: https://github.com/Lex-van-Os/AWS-Web-Server-Deployment.git
-        dest: /home/ubuntu/AWS-Web-Server-Deployment # Verify this path
+        dest: /var/www/AWS-Web-Server-Deployment
         state: present
-        check_mode: true
 
     - name: Create Python virtual environment
-      ansible.builtin.command: python3 -m venv /home/ubuntu/AWS-Web-Server-Deployment/web/web-app-env
-      args:
-        creates: /home/ubuntu/AWS-Web-Server-Deployment/web/web-app-env
-      check_mode: true
-
-    - name: Activate Python virtual environment
-      ansible.builtin.command: source /home/ubuntu/AWS-Web-Server-Deployment/web/web-app-env/bin/activate
-      check_mode: true
+      ansible.builtin.command:
+        cmd: python3 -m venv /var/www/AWS-Web-Server-Deployment/web/web-app-env
+        creates: /var/www/AWS-Web-Server-Deployment/web/web-app-env
 
     - name: Install Pip packages
       ansible.builtin.pip:
-        requirements: /home/ubuntu/AWS-Web-Server-Deployment/web/requirements.txt
-        virtualenv: /home/ubuntu/AWS-Web-Server-Deployment/web/web-app-env
-        check_mode: true
+        requirements: /var/www/AWS-Web-Server-Deployment/web/requirements.txt
+        virtualenv: /var/www/AWS-Web-Server-Deployment/web/web-app-env
 
     - name: Create Supervisor configuration file
       ansible.builtin.template:
-        src: /home/ubuntu/AWS-Web-Server-Deployment/web/supervisor/flask-app.conf.j2
+        src: /var/www/AWS-Web-Server-Deployment/web/supervisor/flask-app.conf.j2
         dest: /etc/supervisor/conf.d/flask-app.conf
         state: present
         check_mode: true
-        mode: "0644"
-
-    - name: Restart Supervisor service
-      ansible.builtin.service:
-        name: supervisor
-        state: restarted
-        check_mode: true
+        mode: "0644" # File permissions on the server
+      notify: Restart Supervisor
 
     - name: Deploy Nginx configuration from template file
       ansible.builtin.template:
-        src: /home/ubuntu/AWS-Web-Server-Deployment/web/nginx/flask-app.conf.j2
+        src: /var/www/AWS-Web-Server-Deployment/web/nginx/flask-app.conf.j2
         dest: /etc/nginx/sites-available/flask-app.conf
         state: present
         check_mode: true
-        mode: "0644" # File permissions on the server
+        mode: "0644"
+      notify: Reload Nginx
 
     - name: Create symbolic link to Nginx configuration
       ansible.builtin.file:
         src: /etc/nginx/sites-available/flask-app.conf
         dest: /etc/nginx/sites-enabled/flask-app.conf
         state: link
-        check_mode: true
 
     - name: Remove default Nginx site
-      file:
+      ansible.builtin.file:
         path: /etc/nginx/sites-enabled/default
         state: absent
         force: yes
+
+    - name: Wait for Flask application to start
+      ansible.builtin.wait_for:
+        host: localhost
+        port: 80
+        delay: 10
+        timeout: 300
+        state: started
+
+    - name: Test Flask application
+      ansible.builtin.uri:
+        url: http://localhost/
+        return_content: true
+        status_code: 200
+
+  handlers:
+    - name: Restart Supervisor
+      ansible.builtin.service:
+        name: supervisor
+        state: restarted
 
     - name: Reload Nginx
       ansible.builtin.service:
         name: nginx
         state: reloaded
-        check_mode: true
 # TODO:
 # Creation of user + group, for Supervisor configuration
 # Make Supervisor configuration dynamic using Jinja2 template

@@ -1,8 +1,8 @@
 [program:flask-web-app] 
 command=/bin/bash -c 'source /var/www/flask-web-app/web-app-env/bin/activate; gunicorn -w 3 --bind unix:/var/www/flask-web-app/ipc.sock wsgi:app'
 directory=/var/www/flask-web-app
-user=flaskapp
-group=flaskapp
+user={{ app_user }}
+group={{ app_group }}
 autostart=true 
 autorestart=true 
 stdout_logfile=/var/www/flask-web-app/flask-web-app.out.log 
