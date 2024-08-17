@@ -51,5 +51,4 @@ echo "$EC2_PUBLIC_IP" >> web_server_inventory.ini
 
 # Step 3: Run Ansible to configure the web application environment
 echo "Configuring the web application environment..."
-cd ../../ansible
 ansible-playbook -i inventory/hosts playbook.yml
