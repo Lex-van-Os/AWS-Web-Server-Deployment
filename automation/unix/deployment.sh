@@ -6,7 +6,7 @@ KEY_NAME="my-key-pair"
 # Function to handle errors and exit the script
 handle_error() {
     echo "An error occurred. Exiting..."
-    terraform destroy -auto-approve
+    # terraform destroy -auto-approve
     exit 1
 }
 
@@ -31,6 +31,22 @@ echo "Setting the permissions for the private key..."
 chmod 400 keys/web_server_key.pem
 
 echo "Private key exported."
+
+# Step 3: Export the public IP address of the web server and set it as an environment variable
+echo "Exporting the public IP address of the web server..."
+export TF_VAR_web_server_ip=$(terraform output -raw web_server_public_ip)
+
+if [ -z "$EC2_PUBLIC_IP" ]; then
+  echo "Failed to retrieve EC2 instance public IP. Exiting."
+  return false
+fi
+
+echo "Creating Ansible inventory file..."
+
+cd ../../ansible
+
+echo "[ec2_web_server]" > web_server_inventory.ini
+echo "$EC2_PUBLIC_IP" >> web_server_inventory.ini
 
 # Step 3: Run Ansible to configure the web application environment
 echo "Configuring the web application environment..."
