@@ -12,6 +12,7 @@ handle_error() {
 
 # Set the error handler
 trap handle_error ERR
+trap 
 
 # Step 1: Run Terraform to provision the web application environment
 echo "Initializing Terraform..."
@@ -25,6 +26,12 @@ echo "Provisioning complete."
 
 # Step 2: Export the private key to the local machine
 echo "Exporting the private key..."
+
+if [ -f "keys/web_server_key.pem" ]; then 
+  echo "Removing old private key..."
+  rm keys/web_server_key.pem
+fi
+
 terraform output -raw private_key_pem > keys/web_server_key.pem
 
 echo "Setting the permissions for the private key..."
