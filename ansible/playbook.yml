@@ -12,7 +12,7 @@
       ansible.builtin.group:
         name: "{{ app_group }}"
         state: present
-        check_mode: true
+      check_mode: true
 
     - name: Ensure "{{ app_user }}" user exists
       ansible.builtin.user:
@@ -21,7 +21,7 @@
         createhome: yes
         shell: /bin/bash
         state: present
-        check_mode: true
+      check_mode: true
 
     - name: Set up sudoers for "{{ app_user }}" user (if needed)
       ansible.builtin.copy:
@@ -58,7 +58,7 @@
         path: /var/www/AWS-Web-Server-Deployment
         state: directory
         mode: "0755"
-        check_mode: true
+      check_mode: true
 
     - name: Clone Flask application repository
       ansible.builtin.git:
@@ -81,18 +81,18 @@
         src: /var/www/AWS-Web-Server-Deployment/web/supervisor/flask-app.conf.j2
         dest: /etc/supervisor/conf.d/flask-app.conf
         state: present
-        check_mode: true
         mode: "0644" # File permissions on the server
       notify: Restart Supervisor
+      check_mode: true
 
     - name: Deploy Nginx configuration from template file
       ansible.builtin.template:
         src: /var/www/AWS-Web-Server-Deployment/web/nginx/flask-app.conf.j2
         dest: /etc/nginx/sites-available/flask-app.conf
         state: present
-        check_mode: true
         mode: "0644"
       notify: Reload Nginx
+      check_mode: true
 
     - name: Create symbolic link to Nginx configuration
       ansible.builtin.file:
