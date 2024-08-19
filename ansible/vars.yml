@@ -2,3 +2,4 @@ app_user: flaskapp
 app_group: webapp
 flask_app_port: 80
 flask_app_domain_name: ec2-web-app.example.com
+need_sudo_access: false
