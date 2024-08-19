@@ -51,4 +51,8 @@ echo "$TF_VAR_web_server_ip" >> web_server_inventory.ini
 
 # Step 3: Run Ansible to configure the web application environment
 echo "Configuring the web application environment..."
-ansible-playbook -i inventory/hosts playbook.yml
+ansible-playbook -i web_server_inventory.ini playbook.yml
+
+# TODO:
+# Automatically delete old key file if it exists
+# Check security of working with key through a shell script as this one
