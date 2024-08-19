@@ -47,7 +47,7 @@ pwd
 cd ../../ansible
 
 echo "[ec2_web_server]" > web_server_inventory.ini
-echo "$EC2_PUBLIC_IP" >> web_server_inventory.ini
+echo "$TF_VAR_web_server_ip" >> web_server_inventory.ini
 
 # Step 3: Run Ansible to configure the web application environment
 echo "Configuring the web application environment..."
