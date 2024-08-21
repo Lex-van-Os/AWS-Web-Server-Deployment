@@ -40,18 +40,21 @@
         state: present
         # when: python_version.rc != 0
         update_cache: yes # Same as running apt-get update
+      become: true
 
     - name: Install Nginx
       ansible.builtin.apt:
         name: nginx
         state: present
         update_cache: yes
+      become: true
 
     - name: Install Git
       ansible.builtin.apt:
         name: git
         state: present
         update_cache: yes
+      become: true
 
     - name: Create project repository to clone to
       ansible.builtin.file:
@@ -125,11 +128,13 @@
       ansible.builtin.service:
         name: supervisor
         state: restarted
+      become: true
 
     - name: Reload Nginx
       ansible.builtin.service:
         name: nginx
         state: reloaded
+      become: true
 # TODO:
 # Creation of user + group, for Supervisor configuration
 # Make Supervisor configuration dynamic using Jinja2 template
