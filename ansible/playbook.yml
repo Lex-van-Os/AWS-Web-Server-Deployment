@@ -67,7 +67,6 @@
       ansible.builtin.git:
         repo: https://github.com/Lex-van-Os/AWS-Web-Server-Deployment.git
         dest: /var/www/AWS-Web-Server-Deployment
-        state: present
 
     - name: Create Python virtual environment
       ansible.builtin.command:
@@ -83,7 +82,6 @@
       ansible.builtin.template:
         src: /var/www/AWS-Web-Server-Deployment/web/supervisor/flask-app.conf.j2
         dest: /etc/supervisor/conf.d/flask-app.conf
-        state: present
         mode: "0644" # File permissions on the server
       notify: Restart Supervisor
       check_mode: true
@@ -92,7 +90,6 @@
       ansible.builtin.template:
         src: /var/www/AWS-Web-Server-Deployment/web/nginx/flask-app.conf.j2
         dest: /etc/nginx/sites-available/flask-app.conf
-        state: present
         mode: "0644"
       notify: Reload Nginx
       check_mode: true
