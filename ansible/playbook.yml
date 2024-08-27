@@ -70,13 +70,15 @@
     - name: Change ownership of project directory
       ansible.builtin.file:
         path: /var/www/AWS-Web-Server-Deployment
-        owner: '{{ app_user }}'
-        group: '{{ app_group }}'
+        recurse: yes
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
       become: true
 
     - name: Change permissions of project directory
       ansible.builtin.file:
         path: /var/www/AWS-Web-Server-Deployment
+        recurse: yes
         mode: "0755"
       become: true
 
