@@ -11,6 +11,7 @@
       ansible.builtin.group:
         name: "{{ app_group }}"
         state: present
+      become: true
 
     - name: Ensure "{{ app_user }}" user exists
       ansible.builtin.user:
@@ -19,6 +20,7 @@
         createhome: yes
         shell: /bin/bash
         state: present
+      become: true
 
     - name: Set up sudoers for "{{ app_user }}" user (if needed)
       ansible.builtin.copy:
