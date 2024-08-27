@@ -29,6 +29,13 @@
         mode: "0440"
       when: need_sudo_access
 
+- name: EC2 Web Server configuration
+  hosts: ec2_web_server
+  remote_user: "{{ app_user }}"
+  vars_files:
+    - vars.yml
+
+  tasks:
     - name: Install Python dependencies
       ansible.builtin.apt:
         name:
@@ -68,7 +75,6 @@
       ansible.builtin.git:
         repo: https://github.com/Lex-van-Os/AWS-Web-Server-Deployment.git
         dest: /var/www/AWS-Web-Server-Deployment
-      become: true
 
     # - name: Change ownership of project directory
     #   ansible.builtin.file:
