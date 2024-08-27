@@ -6,13 +6,11 @@
   tasks:
     - name: Ping Server
       ansible.builtin.ping:
-      check_mode: false
 
     - name: Ensure "{{ app_group }}" group exists
       ansible.builtin.group:
         name: "{{ app_group }}"
         state: present
-      check_mode: true
 
     - name: Ensure "{{ app_user }}" user exists
       ansible.builtin.user:
@@ -21,7 +19,6 @@
         createhome: yes
         shell: /bin/bash
         state: present
-      check_mode: true
 
     - name: Set up sudoers for "{{ app_user }}" user (if needed)
       ansible.builtin.copy:
@@ -61,7 +58,6 @@
         path: /var/www/AWS-Web-Server-Deployment
         state: directory
         mode: "0755"
-      check_mode: true
 
     - name: Clone Flask application repository
       ansible.builtin.git:
@@ -98,7 +94,6 @@
         dest: /etc/supervisor/conf.d/flask-app.conf
         mode: "0644" # File permissions on the server
       notify: Restart Supervisor
-      check_mode: true
 
     - name: Deploy Nginx configuration from template file
       ansible.builtin.template:
@@ -106,7 +101,6 @@
         dest: /etc/nginx/sites-available/flask-app.conf
         mode: "0644"
       notify: Reload Nginx
-      check_mode: true
 
     - name: Create symbolic link to Nginx configuration
       ansible.builtin.file:
