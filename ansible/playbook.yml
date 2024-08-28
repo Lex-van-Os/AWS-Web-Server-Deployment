@@ -119,7 +119,6 @@
         mode: "0644" # File permissions on the server
       notify: Restart Supervisor
       become: true
-      become_user: "{{ app_user }}"
 
     - name: Deploy Nginx configuration from template file
       ansible.builtin.template:
@@ -127,18 +126,21 @@
         dest: /etc/nginx/sites-available/flask-app.conf
         mode: "0644"
       notify: Reload Nginx
+      become: true
 
     - name: Create symbolic link to Nginx configuration
       ansible.builtin.file:
         src: /etc/nginx/sites-available/flask-app.conf
         dest: /etc/nginx/sites-enabled/flask-app.conf
         state: link
+      become: true
 
     - name: Remove default Nginx site
       ansible.builtin.file:
         path: /etc/nginx/sites-enabled/default
         state: absent
         force: yes
+      become: true
 
     - name: Wait for Flask application to start
       ansible.builtin.wait_for:
