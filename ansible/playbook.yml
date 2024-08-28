@@ -64,12 +64,16 @@
         group: "{{ app_group }}"
       become: true
 
+    - name: Mark /var/www/AWS-Web-Server-Deployment as a safe directory for Git
+      ansible.builtin.command: git config --global --add safe.directory /var/www/AWS-Web-Server-Deployment
+      become: true
+
     - name: Clone Flask application repository
       ansible.builtin.git:
         repo: https://github.com/Lex-van-Os/AWS-Web-Server-Deployment.git
         dest: /var/www/AWS-Web-Server-Deployment
-      become: true
-      become_user: "{{ app_user }}"
+      # become: true
+      # become_user: "{{ app_user }}"
 
     # - name: Change ownership of project directory
     #   ansible.builtin.file:
