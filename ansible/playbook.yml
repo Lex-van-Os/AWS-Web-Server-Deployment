@@ -106,14 +106,14 @@
 
     - name: Create Supervisor configuration file
       ansible.builtin.template:
-        src: /var/www/AWS-Web-Server-Deployment/web/supervisor/flask-app.conf.j2
+        src: ../web/supervisor/flask-app.conf.j2
         dest: /etc/supervisor/conf.d/flask-app.conf
         mode: "0644" # File permissions on the server
       notify: Restart Supervisor
 
     - name: Deploy Nginx configuration from template file
       ansible.builtin.template:
-        src: /var/www/AWS-Web-Server-Deployment/web/nginx/flask-app.conf.j2
+        src: ../web/nginx/flask-app.conf.j2
         dest: /etc/nginx/sites-available/flask-app.conf
         mode: "0644"
       notify: Reload Nginx
