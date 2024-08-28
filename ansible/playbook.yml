@@ -110,6 +110,8 @@
         dest: /etc/supervisor/conf.d/flask-app.conf
         mode: "0644" # File permissions on the server
       notify: Restart Supervisor
+      become: true
+      become_user: "{{ app_user }}"
 
     - name: Deploy Nginx configuration from template file
       ansible.builtin.template:
