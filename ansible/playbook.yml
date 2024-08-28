@@ -68,11 +68,19 @@
       ansible.builtin.command: git config --global --add safe.directory /var/www/AWS-Web-Server-Deployment
       become: true
 
+    - name: Check if the directory exists and is empty
+      ansible.builtin.find:
+        paths: /var/www/AWS-Web-Server-Deployment
+        recurse: no
+        file_type: any
+      register: web_app_directory_contents
+
     - name: Clone Flask application repository
       ansible.builtin.git:
         repo: https://github.com/Lex-van-Os/AWS-Web-Server-Deployment.git
         dest: /var/www/AWS-Web-Server-Deployment
       become: true
+      when: web_app_directory_contents.matched == 0
       # become_user: "{{ app_user }}"
 
     - name: Change ownership of project directory
