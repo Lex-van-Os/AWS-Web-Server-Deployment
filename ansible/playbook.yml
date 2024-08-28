@@ -29,13 +29,6 @@
         mode: "0440"
       when: need_sudo_access
 
-- name: EC2 Web Server configuration
-  hosts: ec2_web_server
-  remote_user: "{{ app_user }}"
-  vars_files:
-    - vars.yml
-
-  tasks:
     - name: Install Python dependencies
       ansible.builtin.apt:
         name:
@@ -75,6 +68,8 @@
       ansible.builtin.git:
         repo: https://github.com/Lex-van-Os/AWS-Web-Server-Deployment.git
         dest: /var/www/AWS-Web-Server-Deployment
+      become: true
+      become_user: "{{ app_user }}"
 
     # - name: Change ownership of project directory
     #   ansible.builtin.file:
@@ -95,11 +90,15 @@
       ansible.builtin.command:
         cmd: python3 -m venv /var/www/AWS-Web-Server-Deployment/web/web-app-env
         creates: /var/www/AWS-Web-Server-Deployment/web/web-app-env
+      become: true
+      become_user: "{{ app_user }}"
 
     - name: Install Pip packages
       ansible.builtin.pip:
         requirements: /var/www/AWS-Web-Server-Deployment/web/requirements.txt
         virtualenv: /var/www/AWS-Web-Server-Deployment/web/web-app-env
+      become: true
+      become_user: "{{ app_user }}"
 
     - name: Create Supervisor configuration file
       ansible.builtin.template:
